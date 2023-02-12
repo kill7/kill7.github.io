@@ -1,0 +1,210 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0210)http://yy.hrbfu.edu.cn/yy/ycyy.jsp;jsessionid=F7632D0471C0CACD9E93DEBA51DBAFF3;jsessionid=CA1BE02B44F41B730D8A39ACA6EEEE61;jsessionid=D1129B78746CF8F55CDFA7E9890A77EE;jsessionid=6666CD9727D46A3DBB1BE2DC28C8C0AD -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>浴池预约</title>
+		<link rel="stylesheet" type="text/css" href="./浴池预约_选后更改_files/style_20220329.css">
+		<link rel="shortcut icon" href="http://yy.hrbfu.edu.cn/yy/images/hrbfu.icon" type="image/x-icon">
+		<!--<script src="./浴池预约_选后更改_files/dingtalk.open.js.下载"></script>-->
+		<script type="text/javascript">
+		function hideSJ() {
+			document.getElementById("sj").innerHTML="<option value=\"0\">时间</option>";
+		}
+		function showSJ(){
+			var qySel = document.getElementById("qy");
+			var qy = qySel.options[qySel.options.selectedIndex].value;
+			var rqSel = document.getElementById("rq");
+			var rq = rqSel.options[rqSel.options.selectedIndex].value;
+			
+			if(qy!="0"){
+				dd.device.notification.showPreloader({
+				    text: "正在更新剩余位置...", 
+				    showIcon: true, 
+				    onSuccess : function(result) {
+				    	var xmlhttp;
+						if (window.XMLHttpRequest) {
+							//  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+							xmlhttp=new XMLHttpRequest();
+						} else {
+							// IE6, IE5 浏览器执行代码
+							xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+						}
+						
+						xmlhttp.onreadystatechange=function() {
+							if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+								document.getElementById("sj").innerHTML=xmlhttp.responseText;
+								document.getElementById("yyButton").disabled="";
+								document.getElementById("yyButton").style.background="#1E90FF";
+								dd.device.notification.hidePreloader({
+						    	    onSuccess : function(result) {
+						    	    	
+						    	    },
+						    	    onFail : function(err) {
+						    	    	alert("页面脚本错误，请在清理缓存后重试。");
+						    	    }
+						    	});
+							}
+						};
+						xmlhttp.open("POST","showYCSJ.do",true);
+						xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+						var xm = document.getElementById("xm").value;
+						xmlhttp.send("qy="+qy+"&rq="+rq+"&xm="+xm);
+				    },
+				    onFail : function(err) {
+				    	alert("页面脚本错误，请在清理缓存后重试。");
+				    }
+				});
+			}
+		}
+		
+		function ycyy(){
+			document.getElementById("yyButton").disabled="disabled";
+			document.getElementById("yyButton").style.background="lightgrey";
+			
+			var qySel = document.getElementById("qy");
+			var qy = qySel.options[qySel.options.selectedIndex].value;
+			var sjSel = document.getElementById("sj");
+			var sj = sjSel.options[sjSel.options.selectedIndex].value;
+			if(qy=="0"){
+				document.getElementById("sm").innerHTML="<span style=\"color:red;\">请选择预约区域</span><img src=\"images/red.png\" class=\"messagePic\"/>";
+			}else if(sj=="0"){
+				document.getElementById("sm").innerHTML="<span style=\"color:red;\">请选择预约时间</span><img src=\"images/red.png\" class=\"messagePic\"/>";
+			}else{
+				dd.device.notification.showPreloader({
+				    text: "正在为您预约...", 
+				    showIcon: true, 
+				    onSuccess : function(result) {
+				    	var xmlhttp;
+						if (window.XMLHttpRequest) {
+							//  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+							xmlhttp=new XMLHttpRequest();
+						} else {
+							// IE6, IE5 浏览器执行代码
+							xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+						}
+						
+						xmlhttp.onreadystatechange=function() {
+							if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+								var sm = document.getElementById("sm");
+								var smText = "";
+								result = JSON.parse(xmlhttp.responseText);
+								var color = result.color;
+								var message = result.message;
+								if(color=="red"){
+									smText += "<span style=\"color:red;\">" + message + "&nbsp;</span><img src=\"images/red.png\" class=\"messagePic\"/>";
+								}else if(color=="orange"){
+									smText += "<span style=\"color:orange;\">" + message + "&nbsp;</span><img src=\"images/yellow.png\" class=\"messagePic\"/>";
+								}else if(color=="green"){
+									smText += "<span style=\"color:green;\">" + message + "&nbsp;</span><img src=\"images/green.png\" class=\"messagePic\"/>";
+									var sjSel = document.getElementById("sj");
+									var sj = sjSel.options[sjSel.options.selectedIndex];
+									var sjmc = sj.innerHTML;
+									var rsStartIndex = sjmc.lastIndexOf("(");
+									var rsEndIndex = sjmc.lastIndexOf("/");
+									sj.innerHTML = sjmc.substring(0,rsStartIndex + 1) + (parseInt(sjmc.substring(rsStartIndex + 1,rsEndIndex)) + 1) + sjmc.substring(rsEndIndex);
+								}
+								sm.innerHTML = smText;
+								dd.device.notification.hidePreloader({
+						    	    onSuccess : function(result) {
+						    	    	
+						    	    },
+						    	    onFail : function(err) {
+						    	    	alert("页面脚本错误，请在清理缓存后重试。");
+						    	    }
+						    	});
+							}
+						};
+						xmlhttp.open("POST","ycyy.do",true);
+						xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+						var xhzgh = document.getElementById("xhzgh").value;
+						var xm = document.getElementById("xm").value;
+						var rqSel = document.getElementById("rq");
+						var rq = rqSel.options[rqSel.options.selectedIndex].value;
+						xmlhttp.send("xhzgh="+xhzgh+"&xm="+xm+"&sj="+sj+"&qy="+qy+"&rq="+rq);
+				    },
+				    onFail : function(err) {
+				    	alert("页面脚本错误，请在清理缓存后重试。");
+				    }
+				});
+			}
+		}
+		function showGXRZ(){
+			dd.device.notification.alert({
+			    //message: "通知：系统将于4月7日21:00停机维护，对服务器进行升级，维护期间将无法访问。",
+			    //title: "更新日志2022.04.07",//可传空
+			    message: "1.浴池预约系统目前每天只允许预约1个时段，请合理选择预约时段。2.目前无法查看预约记录，所以请牢记自己预约的时段。3.只有到了自己预约的时段，预约凭证才会变为绿色，其他时间显示为红色。4.已经过去的时段无法再预约。",
+			    title: "更新日志2022.04.06",//可传空
+			    buttonName: "我知道了",
+			    onSuccess : function() {
+			        //onSuccess将在点击button之后回调
+			        /*回调*/
+			    },
+			    onFail : function(err) {}
+			});
+		}
+		dd.ready(function() {
+			showGXRZ();
+		});
+		</script>
+	</head>
+	<body>
+				
+		<div class="topRight">你好，蔡旺</div>
+		<div class="topRight" style="margin-top: 20px;"><a href="javascript:void(0)" onclick="showGXRZ()">更新日志</a></div>
+		<div class="title"><p>哈尔滨金融学院</p><p>浴池预约系统</p></div>
+		<div class="content">
+			<div>
+				<form id="form1" method="post">
+					<input id="xhzgh" type="hidden" name="xhzgh" value="19103090145">
+					<input id="xm" type="hidden" name="xm" value="蔡旺">
+					<table class="queryTable">
+						<tbody><tr>
+					        <td>
+					        	<select id="qy" class="tsgTextInput" name="qy" onchange="hideSJ()">
+									<option value="0">区域</option>
+									<option value="m">男浴池</option>
+									<option value="w">女浴池</option>
+								</select>
+					        </td>
+						</tr>
+						<tr>
+					        <td>
+					        	<select id="rq" class="tsgTextInput" name="rq" onchange="hideSJ()">
+									<option value="0">今天</option>
+									<option value="1">明天</option>
+								</select>
+					        </td>
+						</tr>
+						<tr>
+					        <td>
+					        	<select id="sj" class="tsgTextInput" name="sj" onclick="showSJ()"><option value="0">时间</option><option value="1" disabled="disabled" style="color:red">08:00-09:00(40/40)</option><option value="2" disabled="disabled" style="color:red">09:00-10:00(40/40)</option><option value="3" disabled="disabled" style="color:red">10:00-11:00(40/40)</option><option value="4">11:00-12:00(32/40)</option><option value="5">12:00-13:00(20/40)</option><option value="6">13:00-14:00(19/40)</option><option value="7">14:00-15:00(17/40)</option><option value="8">15:00-16:00(21/40)</option><option value="9">16:00-17:00(25/40)</option><option value="10">17:00-18:00(18/40)</option><option value="11">18:00-19:00(16/40)</option><option value="12">19:00-20:00(20/40)</option></select>
+					        </td>
+						</tr>
+						<tr>
+							<td>
+								<p id="sm">
+								
+								&nbsp;
+								
+								</p>
+							</td>
+						</tr>
+						<tr>
+					        <td>
+					        	<input id="yyButton" class="cxButton" type="button" onclick="ycyy()" value="预    约" style="background: rgb(30, 144, 255);">
+					        </td>
+						</tr>
+						<tr>
+					        <td>
+					     		<a class="cxButton" href="http://yy.hrbfu.edu.cn/yy/wyjyc.do">展示凭证</a>
+					        </td>
+						</tr>
+					</tbody></table>
+				</form>
+			</div>
+		</div>
+		
+	
+
+</body></html>
