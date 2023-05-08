@@ -1,1 +1,119 @@
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+ <head>
+    <meta http-equiv="content-Type" content="text/html;charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>考研学习座位预约</title>
+    <link rel="stylesheet" type="text/css" href="D:\桌面\预约\考研学习座位预约_files\style.css" />
+    <!-- <link rel="shortcut icon" href="images/hrbfu.icon" type="image/x-icon" /> -->
+    <script src="https://g.alicdn.com/dingding/dingtalk-jsapi/2.10.3/dingtalk.open.js"></script>
+    <script type="text/javascript">
+    function yy(){
+        // var xmlhttp;
+        // if (window.XMLHttpRequest) {
+        //     xmlhttp=new XMLHttpRequest();
+        // } else {
+        //     xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+        // }
+        // xmlhttp.onreadystatechange=function() {
+        //     if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+        //         function(result) {
+        //             var sm = document.getElementById("sm");
+        //             var smText = "";
+        //             result = JSON.parse(xmlhttp.responseText);
+        //             var color = result.color;
+        //             var message = result.message;
+        //             if(color=="red"){
+        //             smText += "<span style=\"color:red;\">" + message + "&nbsp;</span>< img src=\"images/red.png\" class=\"messagePic\"/>";
+        //             }else if(color=="orange"){
+        //             smText += "<span style=\"color:orange;\">" + message + "&nbsp;</span>< img src=\"images/yellow.png\" class=\"messagePic\"/>";
+        //             }else if(color=="green"){
+        //             smText += "<span style=\"color:green;\">" + message + "&nbsp;</span>< img src=\"images/green.png\" class=\"messagePic\"/>";
+        //             var dqrsTD = document.getElementById("dqrsTD");
+        //             var dqrs = dqrsTD.innerHTML;
+        //             var rsStartIndex = dqrs.lastIndexOf("：");
+        //             var rsEndIndex = dqrs.lastIndexOf("/");
+        //             dqrsTD.innerHTML = dqrs.substring(0,rsStartIndex + 1) + (parseInt(dqrs.substring(rsStartIndex + 1,rsEndIndex)) + 1) + dqrs.substring(rsEndIndex);
+        //             }
+        //             sm.innerHTML = smText;
+        //         }
+        //     }else{
+        //     //Ajax状态改变
+        //     }
+        // };
+        // xmlhttp.open("POST","yy.do",true);
+        // xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+        // var xhzgh = document.getElementById("xhzgh").value;
+        // var xm = document.getElementById("xm").value;
+        // xmlhttp.send("xhzgh="+xhzgh+"&xm="+xm);
+        console.log("yy()")
+    }
+    function count(){
+        // console.log("count()")
+        var startTime = new Date('2023-05-07 23:58:00');
+        var currentTime = new Date();
+        var time = parseInt((startTime - currentTime)/1000);
+        var yyButton = document.getElementById("yyButton");
+        var dqrs = document.getElementById("dqrsTD");
+        yyButton.setAttribute("disabled", true);
+        if(time > 0){
+            var timer = setInterval(function (){
+            if(time == 0){
+                clearInterval(timer);
+                yyButton.disabled = "";
+                yyButton.value = "预    约";
+                dqrs.innerHTML="当前预约人数：193/216";
+            }else{
+                yyButton.value=time+"秒";
+                time --;
+            }
+            }, 1000);
+        }else{
+            yyButton.disabled = "";
+            yyButton.value = "预    约";
+            dqrs.innerHTML="当前预约人数：193/216";
+        }
+    }
+    </script>
+ </head>
+
+ <body onload="count()">
+    <div class="admin">你好，梁淮源</div>
+    <div class="title"><p>哈尔滨金融学院</p ><p>考研学习座位预约系统</p ></div>
+    <div class="content">
+        <div>
+            <form id="form1" method="post">
+                <input id="xhzgh" type="hidden" name="xhzgh" value="19103090140"/>
+                <input id="xm" type="hidden" name="xm" value="梁淮源"/>
+                <table class="queryTable">
+                    <tr>
+                        <td>
+                        <p style="font-size: 20px;text-indent:2em;text-align:left;padding: 0 10%;">考研学习区（共216个座位）将于3月2日12：00开始座位预约，本学期考研学习区只对大三学生开放，使用期限为一学期。</p >
+                        <p style="font-size: 20px;text-indent:2em;text-align:left;padding: 0 10%;">预约成功后请携带身份证于3月3日—3月4日工作时间到图书馆319室抽取座位号，领取存包柜钥匙。过期将被视为放弃使用资格。</p >
+                        <p style="font-size: 20px;text-indent:2em;text-align:left;padding: 0 10%;color : red;">目前系统调试中，产生的数据均为测试数据，将于3月2日12：00清空，请于3月2日12：00之后预约！</p >
+                        <!-- <p style="font-size: 20px;text-indent:2em;text-align:left;padding: 0 10%;color : red;">亲爱的同学们，目前考研学习座位预约已结束，名单已产生并推送至图书馆，本次预约成功的同学，可以在下方看到“您已成功预约”字样。为了保障系统今后的使用，9月16日起系统将进入调试阶段，之后产生的一切测试数据均无效。</p > -->
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="dqrsTD">
+                        当前预约人数：0/216
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p id="sm">&nbsp;</p >
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        <input id="yyButton" class="cxButton" disabled="disabled" type="button" onclick="yy()" value="预    约"/>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+ </body>
+</html>
